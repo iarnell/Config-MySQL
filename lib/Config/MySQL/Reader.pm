@@ -3,7 +3,7 @@ package Config::MySQL::Reader;
 use warnings;
 use strict;
 
-use parent 'Config::INI::Reader';
+use base 'Config::INI::Reader';
 
 =head1 NAME
 
@@ -46,9 +46,24 @@ C<$config> will contain
         },
     }
 
-=head1 METHODS
+=head1 DECSRIPTION
+
+This module extends L<Config::INI::Reader> to support reading
+MySQL-style configuration files.  Although deceptively similar to
+standard C<.INI> files, they can include bare boolean options with no
+value assignment.
+
+=head1 METHODS FOR READING CONFIG
+
+=head2 read_file, read_string, and read_handle
+
+See L<Config::INI::Reader/"METHODS FOR READING CONFIG"> for usage details.
+
+=head1 OVERRIDDEN METHODS
 
 =head2 parse_value_assignment
+
+Copes with MySQL-style boolean properties that have no value assignment.
 
 =cut
 
@@ -56,6 +71,18 @@ sub parse_value_assignment {
     return ( $1, $2 ) if $_[1] =~ /^\s*([^=\s][^=]*?)(?:\s*=\s*(.*?)\s*)?$/;
     return;
 }
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Config::INI>
+
+=item L<MySQL::Config>
+
+=item L<Config::Extend::MySQL>
+
+=back
 
 =head1 AUTHOR
 
@@ -66,8 +93,6 @@ Iain Arnell, C<< <iarnell at gmail.com> >>
 Please report any bugs or feature requests to C<bug-config-ini-mysql at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Config-MySQL>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
 
 
 =head1 SUPPORT

@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More;    # last test to print
+use Test::More 'no_plan';    # last test to print
 
 use_ok('Config::MySQL::Reader');
 
@@ -23,4 +23,3 @@ my $expected = {
 
 is_deeply( $hashref, $expected, 'Config structure matches expected' );
 
-done_testing;

@@ -15,12 +15,27 @@ Version 0.01
 
 our $VERSION = '0.01';
 
-=head1 SYNOPSIS
-
-This module extends L<Config::INI> to support reading and writing of
-MySQL-style configuration files.
-
 =head1 DESCRIPTION
+
+This module extends L<Config::INI> to support reading and writing MySQL-style
+configuration files.  Although deceptively similar to standard C<.INI> files,
+they can include bare boolean options with no value assignment.
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Config::INI>
+
+=item L<MySQL::Config>
+
+=item L<Config::Extend::MySQL>
+
+=back
+
+=head1 THANKS
+
+Thanks to Ricardo Signes for Config-INI.
 
 =head1 AUTHOR
 

@@ -7,6 +7,7 @@ license  'perl';
 
 build_requires 'Test::More';
 
+requires 'base';
 requires 'Config::INI::Reader';
 requires 'Config::INI::Writer';
 

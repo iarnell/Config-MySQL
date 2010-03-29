@@ -3,7 +3,7 @@ package Config::MySQL::Writer;
 use warnings;
 use strict;
 
-use parent 'Config::INI::Writer';
+use base 'Config::INI::Writer';
 
 =head1 NAME
 
@@ -19,11 +19,52 @@ our $VERSION = '0.01';
 
 =head1 SYNOPSIS
 
+If C<$config> contains
+
+    {
+        'mysqld' => {
+            'datadir'      => '/var/lib/mysql',
+            'skip-locking' => undef,
+        },
+        'mysqldump' => {
+            'quick'              => undef,
+            'max_allowed_packet' => '16M',
+        },
+    }
+
+Then when your program contains
+
+    my $config = Config::MySQL::Writer->write_file( $config, 'my.cnf' );
+
+F<my.cnf> will contain
+
+    [mysqld]
+    datadir=/var/lib/mysql
+    skip-locking
+
+    [mysqldump]
+    quick
+    max_allowed_packet = 16M
+
 =head1 DESCRIPTION
 
-=head1 METHODS
+This module extends L<Config::INI::Writer> to support writing
+MySQL-style configuration files.  Although deceptively similar to
+standard C<.INI> files, they can include bare boolean options with no
+value assignment.
+
+=head1 METHODS FOR WRITING CONFIG
+
+=head2 write_file, write_string, and write_handle
+
+See L<Config::INI::Writer/"METHODS FOR WRITING CONFIG"> for usage
+details.
+
+=head1 OVERRIDDEN METHODS
 
 =head2 stringify_value_assignment
+
+Copes with MySQL-style boolean properties that have no value assignment.
 
 =cut
 
@@ -32,6 +73,18 @@ sub stringify_value_assignment {
     return "$name\n" unless defined $value;
     $self->SUPER::stringify_value_assignment($name,$value);
 }
+
+=head1 SEE ALSO
+
+=over
+
+=item L<Config::INI>
+
+=item L<MySQL::Config>
+
+=item L<Config::Extend::MySQL>
+
+=back
 
 =head1 AUTHOR
 
@@ -42,8 +95,6 @@ Iain Arnell, C<< <iarnell at gmail.com> >>
 Please report any bugs or feature requests to C<bug-config-ini-mysql at rt.cpan.org>, or through
 the web interface at L<http://rt.cpan.org/NoAuth/ReportBug.html?Queue=Config-MySQL>.  I will be notified, and then you'll
 automatically be notified of progress on your bug as I make changes.
-
-
 
 
 =head1 SUPPORT

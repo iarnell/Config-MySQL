@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use Test::More;
+use Test::More 'no_plan';
 
 my $R = 'Config::MySQL::Reader';
 my $W = 'Config::MySQL::Writer';
@@ -41,4 +41,3 @@ END_INI
 
 is( $W->write_string($ordered_data), $expected, 'stringifying data' );
 
-done_testing;
