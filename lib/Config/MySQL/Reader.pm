@@ -72,6 +72,21 @@ sub parse_value_assignment {
     return;
 }
 
+=head2 can_ignore
+
+Handle C<!include> and C<!includedir> directives.
+
+=cut
+
+sub can_ignore {
+    my ( $self, $line ) = @_;
+    if ( $line =~ /^\s*(?:\!include)\s+(.*?)\s*$/ ) {
+        $self->read_file($1) if -r $1;
+        return 1;
+    }
+    $self->SUPER::can_ignore($line);
+}
+
 =head1 SEE ALSO
 
 =over
