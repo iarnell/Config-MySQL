@@ -80,8 +80,8 @@ Handle C<!include> and C<!includedir> directives.
 
 sub can_ignore {
     my ( $self, $line ) = @_;
-    if ( $line =~ /^\s*(?:\!include)\s+(.*?)\s*$/ ) {
-        $self->read_file($1) if -r $1;
+    if ( $line =~ /^\s*(\!include(?:dir)?)\s+(.*?)\s*$/ ) {
+        push @{$self->{data}{$self->starting_section}{$1}}, $2;
         return 1;
     }
     $self->SUPER::can_ignore($line);

@@ -7,3 +7,6 @@ key_buffer_size = 32M
 max_allowed_packet = 8M
 
 !include t/my.cnf
+!include t/your.cnf
+
+!includedir t/
