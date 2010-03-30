@@ -11,7 +11,5 @@ requires 'base';
 requires 'Config::INI::Reader';
 requires 'Config::INI::Writer';
 
-auto_install;
-
 WriteAll;
 

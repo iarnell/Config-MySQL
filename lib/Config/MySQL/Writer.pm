@@ -30,6 +30,15 @@ If C<$config> contains
             'quick'              => undef,
             'max_allowed_packet' => '16M',
         },
+        '_' => {
+            '!include' => [
+                '/etc/my_extra.cnf',
+                '/etc/my_other.cnf',
+            ],
+            '!includedir' => [
+                '/etc/my.cnf.d',
+            ],
+        },
     }
 
 Then when your program contains
@@ -37,6 +46,9 @@ Then when your program contains
     my $config = Config::MySQL::Writer->write_file( $config, 'my.cnf' );
 
 F<my.cnf> will contain
+    !include /etc/my_extra.cnf
+    !include /etc/my_other.cnf
+    !includedir /etc/my.cnf.d
 
     [mysqld]
     datadir=/var/lib/mysql
@@ -51,7 +63,7 @@ F<my.cnf> will contain
 This module extends L<Config::INI::Writer> to support writing
 MySQL-style configuration files.  Although deceptively similar to
 standard C<.INI> files, they can include bare boolean options with no
-value assignment.
+value assignment and additional features like C<!include> and C<!includedir>.
 
 =head1 METHODS FOR WRITING CONFIG
 
@@ -64,14 +76,19 @@ details.
 
 =head2 stringify_value_assignment
 
-Copes with MySQL-style boolean properties that have no value assignment.
+Copes with MySQL-style include directives and boolean properties that have no
+value assignment
 
 =cut
 
 sub stringify_value_assignment {
     my ( $self, $name, $value ) = @_;
     return "$name\n" unless defined $value;
-    $self->SUPER::stringify_value_assignment($name,$value);
+    if ( $name =~ /^!include(?:dir)?$/ && ref $value eq 'ARRAY' ) {
+        return $name . ' ' . join( "\n$name ", @$value ) . "\n";
+    } else {
+        return $self->SUPER::stringify_value_assignment( $name, $value );
+    }
 }
 
 =head1 SEE ALSO

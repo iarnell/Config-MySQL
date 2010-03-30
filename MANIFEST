@@ -1,11 +1,8 @@
 Changes
-inc/Module/AutoInstall.pm
 inc/Module/Install.pm
-inc/Module/Install/AutoInstall.pm
 inc/Module/Install/Base.pm
 inc/Module/Install/Can.pm
 inc/Module/Install/Fetch.pm
-inc/Module/Install/Include.pm
 inc/Module/Install/Makefile.pm
 inc/Module/Install/Metadata.pm
 inc/Module/Install/Win32.pm
@@ -14,14 +11,12 @@ lib/Config/MySQL.pm
 lib/Config/MySQL/Reader.pm
 lib/Config/MySQL/Writer.pm
 Makefile.PL
-MANIFEST
+MANIFEST			This list of files
 META.yml
 README
 t/00-load.t
 t/my.cnf
-t/my_include.cnf
 t/pod-coverage.t
 t/pod.t
 t/read.t
-t/read_include.t
 t/write.t

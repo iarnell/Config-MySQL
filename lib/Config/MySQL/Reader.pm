@@ -29,6 +29,9 @@ If F<my.cnf> contains
     quick
     max_allowed_packet = 16M
 
+    !include /etc/my_other.cnf
+    !include /etc/my_extra.cnf
+
 Then when your program contains
 
     my $config = Config::MySQL::Reader->read_file('my.cnf');
@@ -36,6 +39,12 @@ Then when your program contains
 C<$config> will contain
 
     {
+        '_' => {
+            '!include' => [
+                '/etc/my_other.cnf',
+                '/etc/my_extra.cnf',
+            ],
+        },
         'mysqld' => {
             'datadir'      => '/var/lib/mysql',
             'skip-locking' => undef,
@@ -50,8 +59,15 @@ C<$config> will contain
 
 This module extends L<Config::INI::Reader> to support reading
 MySQL-style configuration files.  Although deceptively similar to
-standard C<.INI> files, they can include bare boolean options with no
-value assignment.
+standard C<.INI> files, they can include bare boolean options with no value
+assignment and additional features like C<!include> and C<!includedir>.
+
+C<Config::MySQL::Reader> does not read files included by the C<!include>
+and C<!includedir> directives, but does preserve the directives so that you can
+safely read, modify, and re-write configuration files without losing
+them. If you need to read the contents of included files, you may want to look
+at L<Config::Extend::MySQL> which handles this automatically (but does not
+handle roundtripping).
 
 =head1 METHODS FOR READING CONFIG
 
@@ -74,7 +90,7 @@ sub parse_value_assignment {
 
 =head2 can_ignore
 
-Handle C<!include> and C<!includedir> directives.
+Handle C<!include> and C<!includedir> directives. Comments can start with hash too.
 
 =cut
 
@@ -84,7 +100,18 @@ sub can_ignore {
         push @{$self->{data}{$self->starting_section}{$1}}, $2;
         return 1;
     }
-    $self->SUPER::can_ignore($line);
+    return $line =~ /\A\s*(?:;|#|$)/ ? 1 : 0;
+}
+
+=head2 preprocess_line
+
+Strip inline comments (starting with ; or #)
+
+=cut
+
+sub preprocess_line {
+    my ($self, $line) = @_;
+    ${$line} =~ s/\s+[;#].*$//g;
 }
 
 =head1 SEE ALSO
