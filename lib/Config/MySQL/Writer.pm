@@ -15,7 +15,7 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 =head1 SYNOPSIS
 
@@ -93,7 +93,7 @@ sub stringify_value_assignment {
 
 =head1 SEE ALSO
 
-=over
+=over 4
 
 =item L<Config::INI>
 
@@ -146,6 +146,7 @@ L<http://search.cpan.org/dist/Config-MySQL/>
 
 =head1 ACKNOWLEDGEMENTS
 
+Thanks to Ricardo Signes for Config-INI.
 
 =head1 COPYRIGHT & LICENSE
 
