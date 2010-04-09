@@ -9,14 +9,6 @@ use base 'Config::INI::Writer';
 
 Config::MySQL::Writer - Write MySQL-style configuration files
 
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
-our $VERSION = '0.02';
-
 =head1 SYNOPSIS
 
 If C<$config> contains

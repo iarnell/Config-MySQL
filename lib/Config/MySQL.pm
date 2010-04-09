@@ -7,14 +7,6 @@ use strict;
 
 Config::MySQL - Read and write MySQL-style configuration files
 
-=head1 VERSION
-
-Version 0.01
-
-=cut
-
-our $VERSION = '0.02';
-
 =head1 DESCRIPTION
 
 This module extends L<Config::INI> to support reading and writing MySQL-style
